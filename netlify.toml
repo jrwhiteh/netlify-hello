@@ -1,5 +1,2 @@
 [functions]
-    [functions.functions]
-    external_node_modules = [
-      "hello.js",
-    ]
+  directory="functions"
