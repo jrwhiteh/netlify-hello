@@ -1,4 +1,4 @@
-const readAll = require('readAll.js')
+const readAll = require('./readAll')
 
 exports.handler = async (event, context) => {
   const path = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
