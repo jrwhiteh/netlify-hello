@@ -1,4 +1,4 @@
-const api = require('./')
+const readAll = require('readAll.js')
 
 exports.handler = async (event, context) => {
   const path = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
@@ -8,7 +8,7 @@ exports.handler = async (event, context) => {
     case 'GET':
       /* GET /.netlify/functions/api */
       if (segments.length === 0) {
-        return api.readAll(event, context)
+        return readAll(event, context)
       }
       /* GET /.netlify/functions/api/123456 */
       if (segments.length === 1) {
