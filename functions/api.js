@@ -1,4 +1,4 @@
-const api = require('methods')
+
 require('dotenv').config();
 const {
     DATABASE_URL,
@@ -32,7 +32,7 @@ exports.handler = async (event, context) => {
       /* GET /.netlify/functions/api/123456 */
       if (segments.length === 1) {
         event.id = segments[0]
-        return api.read(event, context)
+        return read(event, context)
       } else {
         return {
           statusCode: 500,
@@ -44,7 +44,7 @@ exports.handler = async (event, context) => {
 
     /* POST /.netlify/functions/api */
     case 'POST':
-      return api.create(event, context)
+      return create(event, context)
 
 
 
@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
     case 'PUT':
       if (segments.length === 1) {
         event.id = segments[0]
-        return api.update(event, context)
+        return update(event, context)
       } else {
         return {
           statusCode: 500,
@@ -68,7 +68,7 @@ exports.handler = async (event, context) => {
     case 'DELETE':
       if (segments.length === 1) {
         event.id = segments[0]
-        return api.delete(event, context)
+        return delete(event, context)
       } else {
         return {
           statusCode: 500,
