@@ -1,4 +1,13 @@
-const readAll = require('./readAll')
+const api = require('methods')
+require('dotenv').config();
+const {
+    DATABASE_URL,
+    SUPABASE_SERVICE_API_KEY
+} = process.env;
+
+// Connect to our database 
+const { createClient } = require('@supabase/supabase-js');
+const supabase = createClient(DATABASE_URL, SUPABASE_SERVICE_API_KEY);
 
 exports.handler = async (event, context) => {
   const path = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
@@ -8,8 +17,18 @@ exports.handler = async (event, context) => {
     case 'GET':
       /* GET /.netlify/functions/api */
       if (segments.length === 0) {
-        return readAll(event, context)
+        // Get everything from the Resume table
+            let { data: resume, error } = await supabase
+            .from('Resume')
+            .select('*')
+            return {
+                statusCode: 200,
+                body: JSON.stringify(resume)
+              }
       }
+
+
+
       /* GET /.netlify/functions/api/123456 */
       if (segments.length === 1) {
         event.id = segments[0]
@@ -20,9 +39,17 @@ exports.handler = async (event, context) => {
           body: 'too many segments in GET request'
         }
       }
+
+
+
     /* POST /.netlify/functions/api */
     case 'POST':
       return api.create(event, context)
+
+
+
+
+
     /* PUT /.netlify/functions/api/123456 */
     case 'PUT':
       if (segments.length === 1) {
@@ -34,6 +61,9 @@ exports.handler = async (event, context) => {
           body: 'invalid segments in POST request, must be /.netlify/functions/api/123456'
         }
       }
+
+
+
     /* DELETE /.netlify/functions/api/123456 */
     case 'DELETE':
       if (segments.length === 1) {
@@ -45,6 +75,9 @@ exports.handler = async (event, context) => {
           body: 'invalid segments in DELETE request, must be /.netlify/functions/api/123456'
         }
       }
+
+
+
     /* Fallthrough case */
     default:
       return {
